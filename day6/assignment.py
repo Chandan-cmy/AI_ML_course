@@ -61,5 +61,23 @@
 # print("Normalised Prices:",normalized)
 
 
-import n
-arr = np.random.randint(50, 101, (4, 3))
+# import numpy as np
+# arr = np.random.randint(50, 101, (4, 3))
+# bonus=np.array([3, 5, 2])
+# new_arr = arr+bonus
+# print(new_arr)
+
+# a=np.mean(new_arr,axis=0)
+# print(a)
+# b=new_arr-a
+# print(b)
+# print(b[b>80])
+
+
+# import numpy as np
+# a=np.zeros((8,8))
+
+# a[1::2, ::2]=1
+# a[::2,1::2]=1
+# print(a)
+
