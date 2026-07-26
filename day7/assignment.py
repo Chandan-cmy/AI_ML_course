@@ -153,7 +153,7 @@
 #     print(f" Min : {np.min(col):.2f}")
 #     print(f" Max : {np.max(col):.2f}")
 
-
+#Exercise 1 — Dot Product Prediction (Beginner)
 # import numpy as np
 
 # houses = np.array([
@@ -168,7 +168,7 @@
 #     predictions = np.dot(houses[i], weights)
 #     print(f"houses{i}={predictions}")
 
-
+#Exercise 2 — Statistics Summary Function (Beginner-Intermediate)
 # import numpy as np
 
 # def describe(arr, name):
@@ -186,6 +186,9 @@
 # test_arr=np.array([78, 85, 90, 67, 88, 92, 75, 81])
 
 # describe(test_arr,"example")
+
+
+#Exercise 4 — Correlation Analysis (Intermediate)
 
 # import numpy as np
 
@@ -213,3 +216,80 @@
 # if correlation_hot < 0:
 #     print("Hot chocolate has Negative Correlation")
 
+
+#Exercise 3 — Outlier Detector (Intermediate)
+
+# import numpy as np
+# def  find_outliers(arr):
+#     q1=np.percentile(arr,25)
+#     q3=np.percentile(arr,75)
+#     iqr=q3-q1
+#     ll=q1-1.5*iqr
+#     ul=q3+1.5*iqr
+#     outliere= arr[(arr<ll) | (arr>ul)]
+#     return outliere
+# employee_salaries=np.array([28000, 31000, 29500, 32000,30000, 28500, 550000, 29000, 31500, 27000, 480000])
+
+# print(len(find_outliers(employee_salaries)))
+
+# import numpy as np
+# hs=np.random.randint(5,10,size=15)
+
+# sl=np.random.randint(0,11,size=15)
+
+# es=np.random.randint(40,100,size=15)
+
+# dataset=np.column_stack((hs,sl,es))
+# print(dataset)
+
+import numpy as np
+
+# Dataset
+hours_slept = np.array([8,7,9,6,5,8,7,9,6,5,8,7,9,6,5])
+
+stress_level = np.array([2,4,1,6,8,3,5,2,7,9,2,4,1,6,8])
+
+exam_score = np.array([92,82,96,68,50,88,80,94,65,45,90,84,98,70,55])
+
+# Combine dataset
+dataset = np.column_stack((hours_slept, stress_level, exam_score))
+
+# Shape
+print("Shape:", dataset.shape)
+
+# Descriptive Statistics
+features = {
+    "Hours Slept": hours_slept,
+    "Stress Level": stress_level,
+    "Exam Score": exam_score
+}
+
+for name, data in features.items():
+    print("\n", name)
+    print("Mean:", np.mean(data))
+    print("Median:", np.median(data))
+    print("Std:", np.std(data))
+    print("Min:", np.min(data))
+    print("Max:", np.max(data))
+
+# Correlation
+print("\nCorrelation (Sleep vs Score):", np.corrcoef(hours_slept, exam_score)[0,1])
+print("Correlation (Stress vs Score):", np.corrcoef(stress_level, exam_score)[0,1])
+
+# Outlier Detection
+q1 = np.percentile(exam_score,25)
+q3 = np.percentile(exam_score,75)
+
+iqr = q3-q1
+
+lower = q1-1.5*iqr
+upper = q3+1.5*iqr
+
+outliers = exam_score[(exam_score<lower) | (exam_score>upper)]
+
+print("\nOutliers:", outliers)
+
+# Percentage above 75
+percentage = np.sum(exam_score>75)/len(exam_score)*100
+
+print("\nPercentage above 75:", percentage,"%")
