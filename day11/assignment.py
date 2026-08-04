@@ -208,11 +208,112 @@ df = pd.read_csv("titanic.csv")
 
 
 
-import pandas as pd
-df=pd.read_csv("titanic.csv")
+# import pandas as pd
 
-print(df.isnull().sum())
-missing_value=(df.isnull().sum()/len(df))*100
+# df = pd.read_csv("titanic.csv")
 
-print(missing_value.sort_values(ascending=False))
+# missing_count = df.isnull().sum()
 
+# missing_percentage = (missing_count / len(df)) * 100
+
+# report = pd.DataFrame({
+#     "Column": missing_count.index,
+#     "Missing Count": missing_count.values,
+#     "Missing Percentage": missing_percentage.values
+# })
+
+# report = report.sort_values(by="Missing Percentage", ascending=False)
+
+# decision = []
+
+# for column in report["Column"]:
+#     if report.loc[report["Column"] == column, "Missing Count"].values[0] == 0:
+#         decision.append("Keep as is")
+#     elif column == "Age":
+#         decision.append("Fill with Median")
+#     elif column == "Embarked":
+#         decision.append("Fill with Mode")
+#     elif column == "Cabin":
+#         decision.append("Drop")
+#     else:
+#         decision.append("Fill with Mean")
+
+# report["Decision"] = decision
+
+# print(report.to_string(index=False))
+
+
+
+# Exercise 2 — Full Cleaning Pipeline (Beginner-Intermediate)
+
+# import pandas as pd
+# import numpy as np
+
+# df=pd.read_csv("titanic.csv")
+# print(df.isnull().sum())
+# print((df.isnull().sum() / len(df) * 100).round(1))
+
+# df = df.drop(columns=["Cabin", "Name", "Ticket", "PassengerId"])
+# print(f"\n After dropping cols: {df.shape}")
+
+# df["Age"] = df["Age"].fillna(df["Age"].median())
+
+# df["Embarked"] = df["Embarked"].fillna(df["Embarked"].mode()[0])
+
+# print(f"After removing duplicates: {df.shape}")
+
+# df.to_csv("titanic_cleaned.csv", index=False)
+# print("\nCleaned dataset saved to titanic_cleaned.csv")
+# print(df.isnull().sum())
+
+# Exercise 3 — String Cleaning (Intermediate)
+
+# df = pd.DataFrame({"City": [" Bangalore","bangalore ","BANGALORE"," Mysore","mysore ","MYSORE"," Chennai ","chennai","CHENNAI "," bangalore"]})
+# print("before cleaning:")
+# print(df["City"].value_counts())
+
+# df["city"] = df["City"].str.strip()
+# df["city"] = df["city"].str.title()
+# df["city"] = df["city"].str.lower()
+# print("after cleaning:")
+# print(df["city"].value_counts())
+
+# Exercise 4 — GroupBy Analysis (Intermediate)
+
+# import pandas as pd
+# df = pd.read_csv("titanic_cleaned.csv")
+
+# avg_fare = df.groupby("Embarked")["Fare"].mean()
+# print(f"Average Fare by Embarked Port:{avg_fare.round(2)}")
+
+# survival_rate = df.groupby("Pclass")["Survived"].mean() * 100
+# print(f" Survival Rate by Passenger Class:{survival_rate.round(1)}")
+
+# avg_age = df.groupby("Survived")["Age"].mean()
+# print(f"Average age of survivors vs non-survivors: {avg_age.round(1)}")
+
+# summary = df.groupby(["Pclass", "Sex"]).agg(
+#     Total_Passengers=("Survived", "count"),
+#     Survivors=("Survived", "sum"))
+
+# print(f" Total passengers and survivors grouped by both class and gender:{summary}")
+
+# Exercise 5 — Merge Practice (Intermediate)
+
+# p = pd.DataFrame({
+#      "product_id": [1, 2, 3, 4, 5, 6],
+#      "product_name": ["Laptop","Mouse pad","Keyboard","Monitor","Printer","Speaker"],
+#       "category": ["Electronics","Accessories","Accessories","Electronics","Electronics","Accessories"]
+#     })
+
+# s = pd.DataFrame({
+#     "product_id": [1, 2, 3, 4, 5],
+#     "units_sold": [50, 150, 80, 40, 25],
+#     "revenue": [25000, 75000, 16000, 60000, 30000]
+# })
+
+# inner_merge = pd.merge(p, s, on="product_id", how="inner")
+# print("Inner Merge:", inner_merge)
+
+# left_merge = pd.merge(p, s, on="product_id", how="left")
+# print("\nLeft Merge:", left_merge)
