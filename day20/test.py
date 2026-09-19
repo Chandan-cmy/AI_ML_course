@@ -499,62 +499,616 @@
 # plt.show()
 
 
+# import numpy as np
+# import pandas as pd
+# from sklearn.linear_model import LinearRegression
+# from sklearn.model_selection import train_test_split
+# from sklearn.metrics import mean_squared_error, mean_absolute_error,r2_score
+# import matplotlib.pyplot as plt
+# import seaborn as sns
+
+# sns.set_theme(style='whitegrid')
+
+
+# from sklearn.datasets import load_diabetes
+# data = load_diabetes()
+# df = pd.DataFrame(data.data, columns=data.feature_names)
+# df['target'] = data.target
+# print(f'Dataset: {df.shape[0]} samples, {df.shape[1]-1} features')
+# print(f'Target: Disease progression score (higher = worse)')
+# print(f'Range: {df.target.min():.0f} to {df.target.max():.0f}')
+
+# print(f'\nMissing values: {df.isnull().sum().sum()}')
+# print(df.describe().round(2))
+
+# X = df.drop(columns=['target'])
+# y = df['target']
+
+# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# print(f'\nTrain: {X_train.shape}, Test: {X_test.shape}')
+
+
+# from sklearn.dummy import DummyRegressor
+# dummy = DummyRegressor(strategy='mean').fit(X_train, y_train)
+# y_d_pred = dummy.predict(X_test)
+# base_rmse= np.sqrt(mean_squared_error(y_test, y_d_pred))
+# print(f'\nBaseline RMSE (always predict mean): {base_rmse:.2f}')
+
+# model = LinearRegression()
+# model.fit(X_train, y_train)
+
+
+# y_pred = model.predict(X_test)
+# rmse = np.sqrt(mean_squared_error(y_test, y_pred))
+# mae = mean_absolute_error(y_test, y_pred)
+# r2 = r2_score(y_test, y_pred)
+# train_r2 = r2_score(y_train, model.predict(X_train))
+
+# print(f'\nLinear Regression Results:')
+# print(f' Train R² : {train_r2:.4f}')
+# print(f' Test R² : {r2:.4f}')
+# print(f' Test RMSE: {rmse:.2f} (vs baseline {base_rmse:.2f})')
+# print(f' Test MAE : {mae:.2f}')
+# print(f' Improvement over baseline: {((base_rmse - rmse) / base_rmse) * 100:.1f}%')
+
+# coef_df = pd.DataFrame({
+#  'Feature' : X.columns,
+#  'Coefficient': model.coef_
+# }).sort_values('Coefficient', key=abs, ascending=False)
+# print('\nFeature Importance (by absolute coefficient):')
+# print(coef_df.to_string(index=False))
+
+
+# Exercise 1 — Simple Regression on Advertising Data (Beginner)
+
+# import numpy as np
+# import pandas as pd
+# from sklearn.linear_model import LinearRegression
+# from sklearn.model_selection import train_test_split
+# from sklearn.metrics import mean_squared_error, r2_score
+# import matplotlib.pyplot as plt
+
+# np.random.seed(42)
+
+# df= pd.DataFrame({
+#     "tv price(in thousands)": [np.random.randint(10,300,size=10)],
+# })
+
+
+# sales = 0.05 * df["tv price(in thousands)"] + 7 + np.random.normal(0, 1, 10)
+
+# X=df[["tv price(in thousands)"]]
+# y=sales
+# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# model = LinearRegression()
+# model.fit(X_train, y_train)
+
+# y_pred = model.predict(X_test)
+
+# rmse = np.sqrt(mean_squared_error(y_test, y_pred))
+# mae = np.mean(np.abs(y_test - y_pred))
+# r2 = r2_score(y_test, y_pred)
+
+# print(f"Test RMSE: {rmse:.2f}")
+# print(f"Test MAE: {mae:.2f}")
+# print(f"Test R²: {r2:.4f}")
+
+
+# plt.scatter(X_test, y_test, color='RED', label='Actual data', edgecolors='white')
+# plt.plot(X_test, y_pred, color='BLUE', label='Predicted data')
+# plt.xlabel('TV Price (in thousands)')
+# plt.ylabel('Sales (units)')
+# plt.legend()
+# plt.show()
+
+
+# import numpy as np
+# import matplotlib.pyplot as plt
+
+# from sklearn.model_selection import train_test_split
+# from sklearn.linear_model import LinearRegression
+# from sklearn.metrics import mean_squared_error, r2_score
+
+
+# np.random.seed(42)
+
+# TV = np.linspace(10, 300, 100)
+
+
+
+# true_coefficient = 0.05
+# true_intercept = 7
+
+# noise = np.random.normal(0, 1, 100)
+
+# sales = (
+#     true_coefficient * TV
+#     + true_intercept
+#     + noise
+# )
+
+
+
+# X_train, X_test, y_train, y_test = train_test_split(
+#     TV,
+#     sales,
+#     test_size=0.2,
+#     random_state=42
+# )
+
+
+# model = LinearRegression()
+
+
+
+# model.fit(X_train.reshape(-1, 1), y_train)
+
+
+# y_pred = model.predict(X_test.reshape(-1, 1))
+
+
+# rmse = np.sqrt(mean_squared_error(y_test, y_pred))
+# r2 = r2_score(y_test, y_pred)
+
+# print("Model Results")
+# print("-" * 30)
+
+# print(f"True coefficient: {true_coefficient:.4f}")
+# print(f"Learned coefficient: {model.coef_[0]:.4f}")
+
+# print(f"RMSE: {rmse:.2f}")
+# print(f"R²: {r2:.4f}")
+
+
+
+# plt.scatter(TV, sales, label="Actual data")
+
+# TV_line = np.linspace(10, 300, 100)
+
+# sales_line = model.predict(
+#     TV_line.reshape(-1, 1)
+# )
+
+# plt.plot(
+#     TV_line,
+#     sales_line,
+#     label="Fitted regression line"
+# )
+
+# plt.xlabel("TV Advertising Spend (Rs. thousands)")
+# plt.ylabel("Sales (units)")
+
+# plt.title("TV Advertising Spend vs Sales")
+
+# plt.legend()
+
+# plt.show()
+
+
+
+# print()
+# print(
+#     f"Business interpretation: "
+#     f"For every additional Rs. 1,000 spent on TV advertising, "
+#     f"sales are expected to increase by approximately "
+#     f"{model.coef_[0]:.2f} units on average."
+# )
+
+
+# import numpy as np
+# import pandas as pd
+# import matplotlib.pyplot as plt
+# from sklearn.datasets import fetch_california_housing
+# from sklearn.model_selection import train_test_split
+# from sklearn.linear_model import LinearRegression
+# from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+
+
+# data = fetch_california_housing()
+
+# df = pd.DataFrame(data.data, columns=data.feature_names)
+
+# df["MedHouseVal"] = data.target
+
+# print("Dataset shape:", df.shape)
+# print("\nFirst 5 rows:")
+# print(df.head())
+
+
+# X = df.drop(columns=["MedHouseVal"])
+# y = df["MedHouseVal"]
+
+
+# X_train, X_test, y_train, y_test = train_test_split(
+#     X,
+#     y,
+#     test_size=0.20,
+#     random_state=42
+# )
+
+# print("\nTraining samples:", X_train.shape[0])
+# print("Testing samples :", X_test.shape[0])
+
+# model = LinearRegression()
+
+# model.fit(X_train, y_train)
+
+
+
+# y_pred = model.predict(X_test)
+
+# rmse = np.sqrt(mean_squared_error(y_test, y_pred))
+# mae = mean_absolute_error(y_test, y_pred)
+# r2 = r2_score(y_test, y_pred)
+
+# print("\n" + "=" * 50)
+# print("LINEAR REGRESSION RESULTS")
+# print("=" * 50)
+
+# print(f"RMSE : {rmse:.4f}")
+# print(f"MAE  : {mae:.4f}")
+# print(f"R²   : {r2:.4f}")
+
+
+# coef_df = pd.DataFrame({
+#     "Feature": X.columns,
+#     "Coefficient": model.coef_
+# })
+
+# coef_df["Absolute_Coefficient"] = coef_df["Coefficient"].abs()
+
+# coef_df = coef_df.sort_values(
+#     by="Absolute_Coefficient",
+#     ascending=False
+# )
+
+# print("\n" + "=" * 50)
+# print("FEATURE COEFFICIENTS")
+# print("=" * 50)
+
+# print(
+#     coef_df[
+#         ["Feature", "Coefficient"]
+#     ].to_string(index=False)
+# )
+
+
+# largest_positive = coef_df.loc[
+#     coef_df["Coefficient"].idxmax()
+# ]
+
+# largest_negative = coef_df.loc[
+#     coef_df["Coefficient"].idxmin()
+# ]
+
+
+# print(
+#     f"Largest positive impact: "
+#     f"{largest_positive['Feature']} "
+#     f"({largest_positive['Coefficient']:.4f})"
+# )
+
+# print(
+#     f"Largest negative impact: "
+#     f"{largest_negative['Feature']} "
+#     f"({largest_negative['Coefficient']:.4f})"
+# )
+
+
+# plt.scatter(y_test,y_pred,alpha=0.5)
+
+# plt.xlabel("Actual House Value")
+# plt.ylabel("Predicted House Value")
+# plt.title("Actual vs Predicted House Values")
+
+
+# min_value = min(y_test.min(), y_pred.min())
+# max_value = max(y_test.max(), y_pred.max())
+
+# plt.plot(
+#     [min_value, max_value],
+#     [min_value, max_value],
+#     linestyle="--",
+#     linewidth=2
+# )
+
+# plt.tight_layout()
+# plt.savefig(
+#     "01_actual_vs_predicted.png",
+#     dpi=300,
+#     bbox_inches="tight"
+# )
+# plt.figure(figsize=(8, 6))
+
+# plt.scatter(
+#     y_pred,
+#     residuals,
+#     alpha=0.5
+# )
+
+# # Zero residual reference line
+# plt.axhline(
+#     y=0,
+#     linestyle="--",
+#     linewidth=2
+# )
+
+# plt.xlabel("Predicted House Value")
+# plt.ylabel("Residual")
+# plt.title("Residuals vs Predicted Values")
+
+# plt.tight_layout()
+
+# plt.savefig(
+#     "02_residuals_vs_predicted.png",
+#     dpi=300,
+#     bbox_inches="tight"
+# )
+
+
+# plt.figure(figsize=(8, 6))
+
+# plt.hist(
+#     residuals,
+#     bins=30,
+#     edgecolor="black"
+# )
+
+# plt.xlabel("Residual")
+# plt.ylabel("Frequency")
+# plt.title("Histogram of Residuals")
+
+# plt.tight_layout()
+
+# plt.savefig(
+#     "03_residual_histogram.png",
+#     dpi=300,
+#     bbox_inches="tight"
+# )
+
+# plt.show()
+
+
+
+# Exercise 4 — Manual Prediction
+
+# import numpy as np
+# import pandas as pd
+# from sklearn.datasets import fetch_california_housing
+# from sklearn.model_selection import train_test_split
+# from sklearn.linear_model import LinearRegression
+
+# data = fetch_california_housing()
+
+# df = pd.DataFrame(data.data, columns=data.feature_names)
+# df["MedHouseVal"] = data.target
+
+# X = df.drop(columns=["MedHouseVal"])
+# y = df["MedHouseVal"]
+
+
+# X_train, X_test, y_train, y_test = train_test_split(
+#     X,
+#     y,
+#     test_size=0.20,
+#     random_state=42
+# )
+
+
+# model = LinearRegression()
+# model.fit(X_train, y_train)
+
+
+# house = X_test.iloc[0].values
+
+# print("House features:")
+# print(house)
+
+
+# manual_prediction = model.intercept_ + np.sum(
+#     model.coef_ * house
+# )
+
+# model_prediction = model.predict(
+#     house.reshape(1, -1)
+# )[0]
+
+
+# print(f"Intercept (b0): {model.intercept_:.10f}")
+
+# print("\nCoefficients:")
+# for feature, coefficient in zip(X.columns, model.coef_):
+#     print(f"{feature:12s}: {coefficient:.10f}")
+
+# print("\nManual prediction :", manual_prediction)
+# print("model.predict()   :", model_prediction)
+
+# print("\nDifference:", manual_prediction - model_prediction)
+
+
+# import numpy as np
+# import pandas as pd
+# from sklearn.datasets import fetch_california_housing
+# from sklearn.model_selection import train_test_split
+# from sklearn.linear_model import LinearRegression
+
+# data = fetch_california_housing()
+
+# df = pd.DataFrame(data.data, columns=data.feature_names)
+
+# df["MedHouseVal"] = data.target
+
+# correlation_matrix = df.corr()[["MedHouseVal"]].drop("MedHouseVal")
+
+# correlation_raking = correlation_matrix["MedHouseVal"].abs().sort_values(ascending=False)
+# print("Correlation with Median House Value:")
+# print(correlation_raking)
+
+# X=df[data.feature_names]
+# y=df["MedHouseVal"]
+
+# X_train, X_test, y_train, y_test = train_test_split( X, y, test_size=0.20, random_state=42)
+
+# model = LinearRegression()
+# model.fit(X_train, y_train)
+
+# y_pred = model.predict(X_test)
+
+# coefficients_df = pd.Series(
+#     model.coef_, 
+#     index = X.columns
+#     )
+
+# coefficents_ranking = coefficients_df.abs().sort_values(ascending=False)
+# print("coefficients ranking:")
+# print(coefficents_ranking)
+
+# import numpy as np
+# import pandas as pd
+# from sklearn.datasets import fetch_california_housing
+# from sklearn.model_selection import train_test_split
+# from sklearn.linear_model import LinearRegression
+
+# data = fetch_california_housing()
+# df = pd.DataFrame(data.data, columns=data.feature_names)
+
+# df["MedHouseVa
+
+
+
 import numpy as np
 import pandas as pd
-from sklearn.linear_model import LinearRegression
+
+from sklearn.datasets import fetch_california_housing
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import mean_squared_error, mean_absolute_error,r2_score
-import matplotlib.pyplot as plt
-import seaborn as sns
-
-sns.set_theme(style='whitegrid')
+from sklearn.linear_model import LinearRegression
 
 
-from sklearn.datasets import load_diabetes
-data = load_diabetes()
-df = pd.DataFrame(data.data, columns=data.feature_names)
-df['target'] = data.target
-print(f'Dataset: {df.shape[0]} samples, {df.shape[1]-1} features')
-print(f'Target: Disease progression score (higher = worse)')
-print(f'Range: {df.target.min():.0f} to {df.target.max():.0f}')
+data = fetch_california_housing()
 
-print(f'\nMissing values: {df.isnull().sum().sum()}')
-print(df.describe().round(2))
+df = pd.DataFrame(
+    data.data,
+    columns=data.feature_names
+)
 
-X = df.drop(columns=['target'])
-y = df['target']
-
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-
-print(f'\nTrain: {X_train.shape}, Test: {X_test.shape}')
+df["MedHouseVal"] = data.target
 
 
-from sklearn.dummy import DummyRegressor
-dummy = DummyRegressor(strategy='mean').fit(X_train, y_train)
-y_d_pred = dummy.predict(X_test)
-base_rmse= np.sqrt(mean_squared_error(y_test, y_d_pred))
-print(f'\nBaseline RMSE (always predict mean): {base_rmse:.2f}')
+X = df.drop(columns=["MedHouseVal"])
+y = df["MedHouseVal"]
+
+
+X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=0.20,random_state=42)
+
+
+X_train_np = X_train.to_numpy()
+X_test_np = X_test.to_numpy()
+
+X_train_intercept = np.column_stack(
+    (np.ones(X_train_np.shape[0]), X_train_np)
+)
+
+X_test_intercept = np.column_stack(
+    (np.ones(X_test_np.shape[0]), X_test_np)
+)
+
+
+W = (
+    np.linalg.inv(
+        X_train_intercept.T @ X_train_intercept
+    )
+    @ X_train_intercept.T
+    @ y_train.to_numpy()
+)
+
+intercept_manual = W[0]
+
+coefficients_manual = W[1:]
+
+y_pred_manual = X_test_intercept @ W
+
+
+rmse_manual = np.sqrt(
+    np.mean((y_test.to_numpy() - y_pred_manual) ** 2)
+)
 
 model = LinearRegression()
+
 model.fit(X_train, y_train)
 
+y_pred_sklearn = model.predict(X_test)
 
-y_pred = model.predict(X_test)
-rmse = np.sqrt(mean_squared_error(y_test, y_pred))
-mae = mean_absolute_error(y_test, y_pred)
-r2 = r2_score(y_test, y_pred)
-train_r2 = r2_score(y_train, model.predict(X_train))
+rmse_sklearn = np.sqrt(
+    np.mean((y_test.to_numpy() - y_pred_sklearn) ** 2)
+)
 
-print(f'\nLinear Regression Results:')
-print(f' Train R² : {train_r2:.4f}')
-print(f' Test R² : {r2:.4f}')
-print(f' Test RMSE: {rmse:.2f} (vs baseline {base_rmse:.2f})')
-print(f' Test MAE : {mae:.2f}')
-print(f' Improvement over baseline: {((base_rmse - rmse) / base_rmse) * 100:.1f}%')
 
-coef_df = pd.DataFrame({
- 'Feature' : X.columns,
- 'Coefficient': model.coef_
-}).sort_values('Coefficient', key=abs, ascending=False)
-print('\nFeature Importance (by absolute coefficient):')
-print(coef_df.to_string(index=False))
+
+print("NORMAL EQUATION vs SKLEARN LINEAR REGRESSION")
+
+print("\nIntercept:")
+print(f"Manual  : {intercept_manual:.10f}")
+print(f"sklearn : {model.intercept_:.10f}")
+
+print("\nCoefficients:")
+print(
+    f"{'Feature':<15}"
+    f"{'Manual':>18}"
+    f"{'sklearn':>18}"
+    f"{'Difference':>18}"
+)
+
+
+for feature, manual, sklearn_coef in zip(
+    X.columns,
+    coefficients_manual,
+    model.coef_
+):
+    difference = manual - sklearn_coef
+
+    print(
+        f"{feature:<15}"
+        f"{manual:>18.10f}"
+        f"{sklearn_coef:>18.10f}"
+        f"{difference:>18.10f}"
+    )
+
+
+print("RMSE COMPARISON")
+
+print(f"Manual RMSE  : {rmse_manual:.10f}")
+print(f"sklearn RMSE : {rmse_sklearn:.10f}")
+
+print(f"\nRMSE Difference: {abs(rmse_manual - rmse_sklearn):.10f}")
+
+print("VERIFICATION")
+
+if np.allclose(
+    coefficients_manual,
+    model.coef_,
+    rtol=1e-6,
+    atol=1e-6
+) and np.isclose(
+    intercept_manual,
+    model.intercept_,
+    rtol=1e-6,
+    atol=1e-6
+):
+    print("Coefficients match to 6+ decimal places")
+
+else:
+    print("Coefficients do not match")
+
+
+if np.isclose(
+    rmse_manual,
+    rmse_sklearn,
+    rtol=1e-6,
+    atol=1e-6
+):
+    print("RMSE values match to 6+ decimal places")
+
+else:
+    print("RMSE values do not match")
