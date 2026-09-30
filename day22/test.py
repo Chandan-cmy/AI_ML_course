@@ -360,50 +360,314 @@
 
 
 
+# import numpy as np
+# import pandas as pd
+# from sklearn.linear_model import LogisticRegression
+# from sklearn.model_selection import train_test_split, cross_val_score
+# from sklearn.preprocessing import StandardScaler
+# from sklearn.metrics import (
+#  accuracy_score, precision_score, recall_score,
+#  f1_score, roc_auc_score, classification_report
+# )
+# from sklearn.dummy import DummyClassifier
+# from sklearn.datasets import load_breast_cancer
+# import warnings
+# warnings.filterwarnings('ignore')
+
+# data = load_breast_cancer()
+# X = pd.DataFrame(data.data, columns=data.feature_names)
+# y = data.target
+# print(f'Dataset: {X.shape}, Classes: {data.target_names}')
+
+# X_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
+
+# sc = StandardScaler()
+# X_trs = sc.fit_transform(X_tr)
+# X_tes = sc.transform(X_te)
+
+# dummy = DummyClassifier(strategy='most_frequent').fit(X_trs, y_tr)
+# print(f'Baseline accuracy: {accuracy_score(y_te, dummy.predict(X_tes)):.4f}')
+
+# model = LogisticRegression(C=0.1, max_iter=1000, random_state=42)
+# model.fit(X_trs, y_tr)
+
+# y_pred = model.predict(X_tes)
+# y_proba = model.predict_proba(X_tes)[:, 1]
+# print(f'\nLogistic Regression Results:')
+# print(f' Accuracy : {accuracy_score(y_te, y_pred):.4f}')
+# print(f' Precision : {precision_score(y_te, y_pred):.4f}')
+# print(f' Recall : {recall_score(y_te, y_pred):.4f}')
+# print(f' F1 Score : {f1_score(y_te, y_pred):.4f}')
+# print(f' ROC-AUC : {roc_auc_score(y_te, y_proba):.4f}')
+# # ── Cross-validation for robust estimate ──────────────────────
+# from sklearn.pipeline import Pipeline
+# pipe = Pipeline([('scaler', StandardScaler()),
+#  ('clf', LogisticRegression(C=0.1, max_iter=1000))])
+# cv_scores = cross_val_score(pipe, X, y, cv=5, scoring='f1')
+# print(f'\n5-Fold CV F1: {cv_scores.mean():.4f} (+/-{cv_scores.std():.4f})')
+# print(f'CV Scores : {cv_scores.round(4)}')
+
+
+
+
+# import numpy as np
+# import pandas as pd
+# from sklearn.linear_model import LogisticRegression
+# from sklearn.model_selection import train_test_split, cross_val_score
+# from sklearn.preprocessing import StandardScaler
+# from sklearn.metrics import confusion_matrix, classification_report
+
+# df = pd.read_csv("titanic_cleaned.csv")
+
+# X=df[["Pclass","Age", "SibSp", "Parch", "Fare"]]
+
+# y=df["Survived"]
+
+# x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
+# sc=StandardScaler()
+# x_train_s = sc.fit_transform(x_train)
+# x_test_s = sc.transform(x_test)
+
+# model = LogisticRegression(max_iter=1000, random_state=42)
+# model.fit(x_train_s, y_train)
+
+# y_pred = model.predict(x_test_s)
+
+# # accuracy = (tp + tn) / (tp + tn + fp + fn)
+# # precision = tp / (tp + fp)
+# # recall = tp / (tp + fn)
+# # f1 = 2 * precision * recall / (precision + recall)
+# # specificity = tn / (tn + fp)
+
+# print(f'\nConfusion Matrix:')
+# print(confusion_matrix(y_test, y_pred))
+
+# print(f'\nFull Classification Report:')
+# print(classification_report(y_test, y_pred,target_names=['Survived', 'Not Survived']))
+
+
+# import numpy as np
+# import pandas as pd
+# from sklearn.linear_model import LogisticRegression
+
+# def sigmoid(z):
+#     return 1 / (1 + np.exp(-z))
+
+
+# def pred_prob(X,w,b):
+#     z = X @ w + b
+#     return sigmoid(z)
+
+# def predict(X,w,b,threshold=0.5):
+#     prob = pred_prob(X,w,b)
+#     return (prob >= threshold).astype(int)
+# X_test=np.array([
+#     [2,3],
+#     [1,2],
+#     [0,1],
+#     [-1,1],
+#     [-2,-1]
+# ])
+# y=np.array([1,1,0,0,0])
+# model = LogisticRegression(max_iter=1000, random_state=42)
+# model.fit(X_test, y)
+# y_pred=model.predict(X_test)
+
+# w=model.coef_[0]  
+# b=model.intercept_[0]  
+# my_prob=pred_prob(X_test,w,b)
+# my_pred=predict(X_test,w,b,threshold=0.5)
+
+
+# print("Predicted probabilities:", my_prob)
+# print("Predicted classes:", my_pred)
+
+# print("Model's predicted classes:", y_pred)
+
+
+
+# import numpy as np
+# import pandas as pd
+# import matplotlib.pyplot as plt
+# from sklearn.linear_model import LogisticRegression
+# from sklearn.model_selection import train_test_split
+# from sklearn.preprocessing import StandardScaler
+# from sklearn.metrics import (
+#     accuracy_score, precision_score, recall_score,
+#     f1_score, confusion_matrix, classification_report)
+# from sklearn.datasets import load_breast_cancer
+
+# data = load_breast_cancer()
+# X = pd.DataFrame(data.data, columns=data.feature_names)
+# y=data.target
+
+# x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# scaler = StandardScaler()
+# x_train_s = scaler.fit_transform(x_train)
+# x_test_s = scaler.transform(x_test)
+
+# model = LogisticRegression(C=0.1, max_iter=1000, random_state=42)
+# model.fit(x_train_s, y_train)
+# y_proba = model.predict_proba(x_test_s)[:, 1]
+
+
+# precisions = []
+# recalls = []
+# f1_scores = []
+# thresholds = np.arange(0.1, 0.91, 0.05)
+
+
+# for threshold in thresholds:
+    
+#     y_pred = (y_proba >= threshold).astype(int)
+
+#     precision = precision_score(y_test, y_pred, zero_division=0)
+#     recall = recall_score(y_test, y_pred, zero_division=0)
+#     f1 = f1_score(y_test, y_pred, zero_division=0)
+
+#     precisions.append(precision)
+#     recalls.append(recall)
+#     f1_scores.append(f1)
+
+
+# plt.figure(figsize=(10, 5))
+# plt.plot(thresholds, precisions, color='#2196F3', lw=3, label='Precision')
+# plt.plot(thresholds, recalls, color='#FF5722', lw=3, label='Recall')
+# plt.plot(thresholds, f1_scores, color='#4CAF50', lw=3, label='F1-Score')
+# plt.xlabel('Threshold')
+# plt.ylabel('Score')
+# plt.title('Performance Metrics vs Threshold')
+# plt.legend()
+# plt.grid(True)
+# plt.show()
+
+# import numpy as np
+# from sklearn.datasets import make_classification
+# from sklearn.model_selection import train_test_split
+# from sklearn.preprocessing import StandardScaler
+# from sklearn.linear_model import LogisticRegression
+# from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score
+
+# X, y = make_classification(
+#     n_samples=1000,
+#     n_features=10,
+#     n_informative=5,
+#     n_redundant=0,
+#     weights=[0.95, 0.05],
+#     random_state=42
+# )
+
+
+# X_train, X_test, y_train, y_test = train_test_split(
+#     X, y,
+#     test_size=0.2,
+#     random_state=42,
+#     stratify=y
+# )
+
+# sc = StandardScaler()
+
+# X_train_s = sc.fit_transform(X_train)
+# X_test_s = sc.transform(X_test)
+
+# model1 = LogisticRegression(max_iter=1000, random_state=42)
+# model1.fit(X_train_s, y_train)
+
+# y_pred1 = model1.predict(X_test_s)
+# y_proba1 = model1.predict_proba(X_test_s)[:, 1]
+
+# model2 = LogisticRegression(
+#     class_weight='balanced',
+#     max_iter=1000,
+#     random_state=42
+# )
+# model2.fit(X_train_s, y_train)
+
+# y_pred2 = model2.predict(X_test_s)
+# y_proba2 = model2.predict_proba(X_test_s)[:, 1]
+
+
+# print("Accuracy :", accuracy_score(y_test, y_pred1))
+# print("Precision:", precision_score(y_test, y_pred1))
+# print("Recall   :", recall_score(y_test, y_pred1))
+# print("F1 Score :", f1_score(y_test, y_pred1))
+# print("AUC      :", roc_auc_score(y_test, y_proba1))
+
+
+# print("Accuracy :", accuracy_score(y_test, y_pred2))
+# print("Precision:", precision_score(y_test, y_pred2))
+# print("Recall   :", recall_score(y_test, y_pred2))
+# print("F1 Score :", f1_score(y_test, y_pred2))
+# print("AUC      :", roc_auc_score(y_test, y_proba2))
+
 import numpy as np
 import pandas as pd
 from sklearn.linear_model import LogisticRegression
-from sklearn.model_selection import train_test_split, cross_val_score
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import (
- accuracy_score, precision_score, recall_score,
- f1_score, roc_auc_score, classification_report
-)
-from sklearn.dummy import DummyClassifier
-from sklearn.datasets import load_breast_cancer
-import warnings
-warnings.filterwarnings('ignore')
+from sklearn.metrics import confusion_matrix, classification_report
+from sklearn.datasets import load_wine
+from sklearn.metrics import roc_curve, roc_auc_score
 
-data = load_breast_cancer()
-X = pd.DataFrame(data.data, columns=data.feature_names)
+data = load_wine()
+x = pd.DataFrame(data.data, columns=data.feature_names)
 y = data.target
-print(f'Dataset: {X.shape}, Classes: {data.target_names}')
 
-X_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42, stratify=y)
 
-sc = StandardScaler()
-X_trs = sc.fit_transform(X_tr)
-X_tes = sc.transform(X_te)
+scaler = StandardScaler()
+x_train_s = scaler.fit_transform(x_train)
+x_test_s = scaler.transform(x_test)
 
-dummy = DummyClassifier(strategy='most_frequent').fit(X_trs, y_tr)
-print(f'Baseline accuracy: {accuracy_score(y_te, dummy.predict(X_tes)):.4f}')
+model = LogisticRegression(C=0.5, max_iter=2000, random_state=42,  )
+model.fit(x_train_s, y_train)
 
-model = LogisticRegression(C=0.1, max_iter=1000, random_state=42)
-model.fit(X_trs, y_tr)
+y_pred = model.predict(x_test_s)
 
-y_pred = model.predict(X_tes)
-y_proba = model.predict_proba(X_tes)[:, 1]
-print(f'\nLogistic Regression Results:')
-print(f' Accuracy : {accuracy_score(y_te, y_pred):.4f}')
-print(f' Precision : {precision_score(y_te, y_pred):.4f}')
-print(f' Recall : {recall_score(y_te, y_pred):.4f}')
-print(f' F1 Score : {f1_score(y_te, y_pred):.4f}')
-print(f' ROC-AUC : {roc_auc_score(y_te, y_proba):.4f}')
-# ── Cross-validation for robust estimate ──────────────────────
-from sklearn.pipeline import Pipeline
-pipe = Pipeline([('scaler', StandardScaler()),
- ('clf', LogisticRegression(C=0.1, max_iter=1000))])
-cv_scores = cross_val_score(pipe, X, y, cv=5, scoring='f1')
-print(f'\n5-Fold CV F1: {cv_scores.mean():.4f} (+/-{cv_scores.std():.4f})')
-print(f'CV Scores : {cv_scores.round(4)}')
+
+conf_matrix = confusion_matrix(y_test, y_pred)
+
+classification = classification_report(y_test, y_pred, target_names=data.target_names)
+
+sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues',
+            xticklabels=data.target_names,
+            yticklabels=data.target_names)
+plt.title('Confusion Matrix')
+plt.xlabel('Predicted')
+plt.ylabel('Actual')
+plt.show()
+
+print("Classification Report:\n", classification)
+
+# ROC curves using One-vs-Rest
+y_proba = model.predict_proba(x_test_s)
+
+plt.figure(figsize=(10, 6))
+
+for i in range(3):
+    fpr, tpr, thresholds = roc_curve(
+        y_test,
+        y_proba[:, i],
+        pos_label=i
+    )
+
+    plt.plot(
+        fpr,
+        tpr,
+        lw=2,
+        label=f'{data.target_names[i]}'
+    )
+
+plt.plot([0, 1], [0, 1], linestyle='--')
+
+plt.title('ROC Curves - One-vs-Rest')
+plt.xlabel('False Positive Rate')
+plt.ylabel('True Positive Rate')
+plt.legend()
+plt.grid()
+plt.show()
+
 
